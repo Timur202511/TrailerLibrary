@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class HelloController {
 
@@ -18,11 +20,27 @@ public class HelloController {
     TextArea descriptionArea;
     @FXML
     VBox iconContainer;
+
+    MediaPlayer mediaPlayer;
     
     public void iconButton1Clicked(ActionEvent event) {
 
     }
 
     public void playAudio(ActionEvent event) {
+
+        try {
+
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
+            String audio = getClass().getResource("/audio/40grn.mp3").toExternalForm();
+            Media media = new Media(audio);
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
