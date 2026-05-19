@@ -3,8 +3,10 @@ package com.example.memlibrary;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -28,6 +30,15 @@ public class HelloController {
 
     private final List<MediaItem> items = new ArrayList<>();
 
+    private MediaItem currentItem;
+
+
+    @FXML
+    public void initialize(){
+        createItems();
+        createIcons();
+    }
+
     private void createItems() {
         items.add(new MediaItem("Штани за 40 гривень",
                 "/images/40grn.png",
@@ -36,23 +47,49 @@ public class HelloController {
         items.add(new MediaItem("9 чи 10",
                 "/images/9chi10.png",
                 "Мем «9 чи 10, не чує баба» — це популярний український інтернет-мем, що базується на гумористичному аудіозаписі телефонної розмови між диспетчером поліції та літньою жінкою, яка недочуває.",
-                "/audio/9chi10.mp3"));
+                "/audio/meow.mp3"));
     }
 
+    private void createIcons(){
+        for (MediaItem item : items) {
 
+            ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(item.getImagePath())));
+            icon.setFitWidth(90);
+            icon.setFitHeight(60);
+            icon.setPreserveRatio(true);
 
-    public void iconButton1Clicked(ActionEvent event) {
+            Button button = new Button(item.getTitle());
+            button.setGraphic(icon);
+            button.setContentDisplay(ContentDisplay.TOP);
+            button.getStyleClass().add("menu-button");
+
+            button.setOnAction(event -> showItem(item));
+            button.setPrefSize(120, 80);
+            iconContainer.getChildren().add(button);
+
+        }
+    }
+
+    private void showItem(MediaItem item) {
+            currentItem = item;
+            mainImageView.setImage(new Image(getClass().getResourceAsStream(item.getImagePath())));
+            descriptionArea.setText(item.getDescription());
 
     }
+
 
     public void playAudio(ActionEvent event) {
+
+        if (currentItem == null){
+            return;
+        }
 
         try {
 
             if (mediaPlayer != null) {
                 mediaPlayer.stop();
             }
-            String audio = getClass().getResource("/audio/40grn.mp3").toExternalForm();
+            String audio = getClass().getResource(currentItem.getAudioPath()).toExternalForm();
             Media media = new Media(audio);
             mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
