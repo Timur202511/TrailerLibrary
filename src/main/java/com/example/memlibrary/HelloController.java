@@ -66,6 +66,7 @@ public class HelloController {
             button.setOnAction(event -> showItem(item));
             button.setPrefSize(120, 80);
             iconContainer.getChildren().add(button);
+            button.getStyleClass().add("menu-button");
 
         }
     }
