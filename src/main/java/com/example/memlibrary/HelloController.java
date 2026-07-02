@@ -15,40 +15,38 @@ import java.util.List;
 public class HelloController {
 
     @FXML
-    private Button playButton; // Стару кнопку iconButton1 прибрали
+    private Button playButton; // Зв'язок із кнопкою "Дивитись трейлер" із FXML.
 
     @FXML
-    private MediaView mainMediaView; // ЗАМІНИЛИ ImageView на MediaView (назва має збігатися з fx:id у FXML)
+    private MediaView mainMediaView; // Наш головний "екран", на якому показується картинка відео.
 
     @FXML
-    private TextArea descriptionArea;
+    private TextArea descriptionArea; // Текстове поле, куди виводяться назва, рейтинг та твоя думка.
 
     @FXML
-    private VBox iconContainer;
+    private VBox iconContainer; // Вертикальна панель ліворуч, куди код автоматично додаватиме кнопки фільмів.
 
-    private MediaPlayer mediaPlayer;
-    private final List<MediaItem> items = new ArrayList<>();
-    private MediaItem currentItem;
-
+    private MediaPlayer mediaPlayer; // Об'єкт-плеєр. Це "динамік та касетник" програми. Сам керує пуском/паузою.
+    private final List<MediaItem> items = new ArrayList<>(); // Наш список (база даних), де зберігаються всі 10 фільмів.
+    private MediaItem currentItem; // Змінна-вказівник, яка запам'ятовує, який саме фільм користувач вибрав прямо зараз.
     @FXML
     public void initialize() {
-        createItems();
-        createIcons();
+        createItems(); // Щойно програма ввімкнулася — наповнюємо список фільмами.
+        createIcons(); // Одразу після цього створюємо кнопки для кожного фільму в лівій панелі.
     }
     @FXML
     public void handlePause(ActionEvent event) {
-        // Перевіряємо, чи плеєр взагалі створений і запущений
-        if (mediaPlayer != null) {
-            // Якщо відео зараз відтворюється — ставимо на паузу
+        if (mediaPlayer != null) { // Перевірка: якщо відео взагалі ще не запускали, то й павзи не буде.
+
+            // Якщо відео зараз активне (грає)
             if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-                mediaPlayer.pause();
-                descriptionArea.setText(descriptionArea.getText() + "\n[Відео призупинено]");
+                mediaPlayer.pause(); // Наказуємо плеєру зупинити кадр
+                descriptionArea.setText(descriptionArea.getText() + "\n"); // Додаємо маркер у текст
             }
-            // Якщо воно вже на паузі — продовжуємо відтворення
+            // Якщо воно вже було на паузі
             else if (mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED) {
-                mediaPlayer.play();
-                // Прибираємо напис про паузу, оновлюючи опис
-                showItem(currentItem);
+                mediaPlayer.play(); // Знімаємо з паузи, трейлер грає далі
+                showItem(currentItem); // Перемальовуємо текст в TextArea, щоб прибрати напис "[Відео призупинено]"
             }
         }
     }
@@ -70,7 +68,7 @@ public class HelloController {
                 "Spider Man 3",
                 "/media/SpiderMan3.mp4",
                 8,
-                "Моя думка: сюжет досить цікавий,фінал має досить несподіваний. Фільм один з небагатьох що має погану кінцівку  Моя оцінка 8,5/10"
+                "Моя думка: сюжет досить цікавий,фінал має досить несподіваний. Фільм один з небагатьох що має погану кінцівку.  Моя оцінка 8,5/10"
         ));
         items.add(new MediaItem(
                 "Avengers 3",
@@ -82,31 +80,31 @@ public class HelloController {
                 "Avengers 4",
                 "/media/Avengers4.mp4",
                 8.4,
-                "Моя думка: Marvel як завжди на висоті, в цьму фільми сподобалось намагання представити машину часу максимально науково хоч це здається неможливо  Моя оцінка 8/10"
+                "Моя думка: Marvel як завжди на висоті, в цьму фільми сподобалось намагання представити машину часу максимально науково хоч це здається неможливо.  Моя оцінка 8/10"
         ));
         items.add(new MediaItem(
                 "Harry Potter 5 ",
                 "/media/HarryPotter.mp4",
                 7.5,
-                "Моя думка: cюжет дуже цікавий, з фільмом можна провести багато парелелей з нашою школою. Цікавий факт з кожним фільмом заставка на початку Ворнер Бразерс стає все темнішою і темнішою як і події частин  Моя оцінка 7/10"
+                "Моя думка: cюжет дуже цікавий, з фільмом можна провести багато парелелей з нашою школою. Цікавий факт з кожним фільмом заставка на початку Ворнер Бразерс стає все темнішою і темнішою як і події частин.  Моя оцінка 7/10"
         ));
         items.add(new MediaItem(
                 "Guardians of the Galaxy ",
                 "/media/Guardians.mp4",
                 7.6,
-                "Моя думка: Фільм чудово піднімає настрій і тримає увагу до кінця, також фільм має крутий сасундтрек  Моя оцінка 7.5/10"
+                "Моя думка: Фільм чудово піднімає настрій і тримає увагу до кінця, також фільм має крутий сасундтрек.  Моя оцінка 9.5/10"
         ));
         items.add(new MediaItem(
                 "Matrix ",
                 "/media/Matrix.mp4",
                 7.3,
-                "Моя думка: Можливо ми живемо у матриці? Ні? А чим тоді доведете? От і думайте тепер   Моя оцінка 9.5/10"
+                "Моя думка: Можливо ми живемо у матриці? Ні? А чим тоді доведете? От і думайте тепер.  Моя оцінка 9.5/10"
         ));
         items.add(new MediaItem(
                 "DrStrange ",
                 "/media/DrS.mp4",
                 6.8,
-                "Моя думка: фільм вражає своєю похмурою атмосферою хоррору. Сюжет досить заплутаний, звичайні смерині не зрозуміють   Моя оцінка 6.9/10"
+                "Моя думка: фільм вражає своєю похмурою атмосферою хоррору. Сюжет досить заплутаний, звичайні смертні не зрозуміють.  Моя оцінка 6.9/10"
         ));
         items.add(new MediaItem(
                 "Iron Man ",
@@ -118,19 +116,18 @@ public class HelloController {
 
     }
 
-    private void createIcons(){
-        for (MediaItem item : items) {
-            Button button = new Button(item.getTitle());
-            button.getStyleClass().add("menu-button");
+    private void createIcons() {
+        for (MediaItem item : items) { // Цикл "for-each": беремо по черзі кожен фільм із нашого списку
+            Button button = new Button(item.getTitle()); // Створюємо нову JavaFX кнопку і пишемо на ній назву фільму
+            button.getStyleClass().add("menu-button"); // Підключаємо до неї стиль дизайну із CSS файлу
 
-            // 1. Збільшуємо ширину кнопки до 170 (щоб вона займала майже всю панель у 180px)
-            button.setPrefSize(170, 60);
+            button.setPrefSize(170, 60); // Виставляємо розміри: 170 пікселів у ширину, 60 у висоту
+            button.setWrapText(true); // Дозволяємо переносити довгі назви (наприклад, "Guardians of the Galaxy") на новий рядок
 
-            // 2. Дозволяємо тексту переноситися на новий рядок, якщо назва занадто довга
-            button.setWrapText(true);
-
+            // Головне: кажемо кнопці, що при кліку на неї треба викликати метод showItem() саме для ЦЬОГО фільму
             button.setOnAction(event -> showItem(item));
-            iconContainer.getChildren().add(button);
+
+            iconContainer.getChildren().add(button); // Фізично додаємо готову кнопку всередину лівої панелі VBox
         }
     }
 
@@ -154,7 +151,7 @@ public class HelloController {
     @FXML
     public void playVideo(ActionEvent event) { // Метод має називатися playVideo, як у FXML
         if (currentItem == null) {
-            descriptionArea.setText("Будь ласка, спочатку оберіть фільм зі списку ліворуч!");
+            descriptionArea.setText(" Cпочатку оберіть фільм зі списку ліворуч!");
             return;
         }
 
